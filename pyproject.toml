@@ -1,0 +1,19 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+# Warnings are errors, so a new deprecation in our own code fails the build rather than
+# scrolling past. Each exemption below must name why it cannot be fixed here.
+filterwarnings = [
+    "error",
+    # starlette 1.6.0 reads the deprecated anyio.abc.BlockingPortal alias at import time
+    # (starlette/testclient.py:53). Both packages are at their latest release, so there is
+    # nothing to upgrade to. Remove once starlette moves to anyio.from_thread.
+    "ignore:The anyio.abc.BlockingPortal alias is deprecated:DeprecationWarning",
+]
